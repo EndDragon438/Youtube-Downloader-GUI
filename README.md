@@ -1,6 +1,6 @@
 # About
 
-Welcome! This is a small GUI wrapper for `yt-dlp` intending to make it very user-friendly and easy to use.
+Welcome! This is a small GUI wrapper for `yt-dlp` intending to make it very user-friendly and easy to use. I don't really plan to update this at all, but if there's a feature you'd like to see lemme know and I might add it.
 
 # Installation
 
