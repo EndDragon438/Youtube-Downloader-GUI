@@ -1,44 +1,39 @@
-Welcome!
+# About
 
-This folder contains information and software to allow you to download Youtube videos easily!
+Welcome! This is a small GUI wrapper for `yt-dlp` intending to make it very user-friendly and easy to use.
 
+# Installation
 
+- Download the `.exe` file from the Releases page. You may get an antivirus warning, you may click "Ok" to continue anyway.
+- Run the file. You may get a Windows Defender warning, to continue, click `More Info` and then `Run Anyway`
+- And you're done!!
 
+# Usage
 
-There are 2 options:
+- Select Output Location
 
-# Option One: yt-gui.exe
+Click this button to choose which folder your video is downloaded to. Default location is the users home directory.
 
-This .exe has all dependencies packaged into one file making it very easy to use. This could be blocked by some antivirus, in which case there is also...
+- Download Playlist?
 
-# Option Two: yt-gui.py + dependencies
+Choose whether or not to download the whole playlist, if the link includes a playlist. Default does not download the playlist, check it to download the playlist
 
-First off, you'll need some dependencies.
+- Download Video/Audio
 
-Dependency no.1: Python
-Click this link (https://www.python.org/downloads/) and click the big yellow "Download Python" button. This will download a .exe file, open that file and click "Install Now"
+Choose to download either a video file, or audio file (mp3). If you'd like to download both, download twice with each option selected.
 
-Dependency no.2: Pip Installs
+- Recode To .mp4?
 
-Start by opening up Command Prompt (press the Windows key and type "cmd" then press Enter)
+If enabled, makes the final video file an `.mp4` file. If enabled, the download will take longer and the program may not respond for a bit; don't worry! It's still working, it will just take a moment.
 
-In Command Prompt, copy paste these three lines:
-```bash
-pip install ffmpeg
-pip install yt-dlp
-pip install gooey
-```
-Now you're pretty much ready to go! Double click the yt-dlp.py file in this folder, and fill out the options!
+- Enter Target Link
 
-In the GUI that opens up, there are several options. Here is what they do.
+Link to the video you'd like to download. All youtube links work, as well as all sites listed [here](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md).
 
-Output Folder: Here you can input where you want to download videos to, either by typing in a filepath or by pressing the "Browse" button and navigating to your destination folder.
-Defaults: Enables the default options, don't turn this off!!
-Do not DL Full Playlist: Enabled by default, this option makes it so when downloading a video you only download that video and none of the playlist it may be a part of. Disable this option to download YT playlists. (it will grab the playlist from a link to a video in the playlist, or the link to the playlist itself)
-Download Audio: This makes it so you will download audio (mp3) files instead of video (mp4) files. Check this if you are downloading music! (if you want to DL both types, you'll have to run it twice)
-Input YT Link: this is where you copy paste the link to the video you want to download! Accepts links to any YT platform, (eg. YT Music) and either video or playlist links!
+- Download
 
-If you're interested in changing the settings more, you'll have to open up yt-gui.py with a text editor and add modifiers to the "Defaults" option section.
+Click this button when you've got all your settings filled in and have a link to download!
 
-Enjoy!!
-- end
+- Command Preview
+
+This is a preview of the options that will be used when you press Download. Most users will not have to worry about this, but if you're curious the items of the list are `['ffmpeg location', 'postprocessor settings', 'format', 'recode', 'no playlist', 'output location', 'download link']`.
