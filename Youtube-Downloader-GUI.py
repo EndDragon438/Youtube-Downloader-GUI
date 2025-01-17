@@ -2,7 +2,7 @@ import os
 
 from yt_dlp import YoutubeDL
 
-from PySide6.QtCore import QSize, QDir
+from PySide6.QtCore import QSize, QDir, QRunnable, QThreadPool
 from PySide6.QtGui import QPalette
 from PySide6.QtWidgets import (
     QApplication,
@@ -18,11 +18,30 @@ from PySide6.QtWidgets import (
     QGroupBox,
     QCheckBox,
     QLineEdit,
+    QDialog,
 )
+
+# class DownloadLogger(QLabel):
+#     def debug(self, msg):
+#         if msg.startswith('[debug] '):
+#             pass
+#         else:
+#             print(msg)
+#             self.setText(msg)
+#     def info(self, msg):
+#         pass
+#     def warning(self, msg):
+#         pass
+#     def error(self, msg):
+#         print(msg)
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        # print(help(YoutubeDL))
+
+        self.threadpool = QThreadPool()
 
         self.setWindowTitle("yt-dlp GUI")
         self.setMinimumSize(QSize(400, 400))
@@ -196,17 +215,86 @@ class MainWindow(QMainWindow):
             'paths': {'home': self.command[5]},
             'postprocessors': self.command[1],
             'retries': 10,
-            'updatetime': False
+            'updatetime': False,
+            # 'logger': Logger()
+            'progress_hooks': [self.downloadHook]
         }
+
         if self.command[3] != '':
             options['final_ext'] = self.command[3]
+        
+        self.commandLabel.setText("if this is showing for a while, it's cause sometimes i don't get progress from ffmpeg cause that PR still isn't merged\nit's still doin things :3")
 
-        self.commandLabel.setText("Downloading...")
+        # Multithreading!!
+        downloader = Downloader()
+        downloader.setOptions(options)
+        downloader.setTarget(self.command[6])
 
-        with YoutubeDL(options) as ytdl:
-            ytdl.download(self.command[6])
+        self.threadpool.start(downloader)
 
-        self.commandLabel.setText("Download Complete!")
+    def downloadHook(self, dict):
+        print(f"\ndownloadHook called with {dict['status']}")
+        try:
+            match dict['status']:
+                case 'downloading':
+                    self.commandLabel.setText(f"{str('%.3f'%dict['elapsed'])} seconds at {str('%.3f'%(dict['speed'].round() / 1000))} kilobytes/second")
+                case 'finished':
+                    self.commandLabel.setText("Download Complete!")
+        except:
+            print("\nHook Failed")
+
+
+class Downloader(QRunnable):
+    def __init__(self):
+        super().__init__()
+        
+        self.options = {}
+        self.target = ''
+
+
+    def setOptions(self, options):
+        self.options = options
+
+    def setTarget(self, target):
+        self.target = target
+
+    def run(self):
+        with YoutubeDL(self.options) as ytdl:
+            ytdl.download(self.target)
+
+# This class is meant to display logs as yt-dlp is downloading the video, and then close itself.
+# However, because of the exec() call the thread is taken up by the dialog box listening for events
+# So all the log calls don't get through
+# I don't feel like dealing with this right now so i'm just going to provide a version of the .exe with console enabled
+class Logger(QDialog):
+    def __init__(self):
+        super().__init__()
+
+        layout = QVBoxLayout()
+        
+        self.logLine = QLabel("logging...")
+        layout.addWidget(self.logLine)
+
+        self.setLayout(layout)
+
+        self.setWindowTitle("Logs")
+        self.exec()
+
+    def debug(self, msg):
+        print(f"DEBUG: {msg}")
+        if msg.find('[download]') > -1:
+            self.logLine.setText(msg[10:])
+        elif msg.find('Merger') > -1:
+            self.close()
+    def info(self, msg):
+        print(f"INFO: {msg}")
+        pass
+    def warning(self, msg):
+        print(f"WARN: {msg}")
+        pass
+    def error(self, msg):
+        print(f"ERROR: {msg}")
+        pass
 
 app = QApplication([])
 
