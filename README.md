@@ -1,14 +1,17 @@
-# About
+<h1 align="center">Youtube Downloader GUI</h1>
+<p align="center"><img src="https://github.com/user-attachments/assets/6a5c740f-0e04-4a18-836b-d564a69c63e3" /></p>
+
+## About
 
 Welcome! This is a small GUI wrapper for `yt-dlp` intending to make it very user-friendly and easy to use. I don't really plan to update this at all, but if there's a feature you'd like to see lemme know and I might add it.
 
-# Installation
+## Installation
 
 - Download the `.exe` file from the Releases page. You may get an antivirus warning, you may click "Ok" to continue anyway.
 - Run the file. You may get a Windows Defender warning, to continue, click `More Info` and then `Run Anyway`
 - And you're done!!
 
-# Usage
+## Usage
 
 - Select Output Location
 
